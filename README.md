@@ -10,9 +10,12 @@ Bookself-API is a project that implements REST APIs to perform CRUD(Create, Read
 
     npm run start-dev
 
+<br/>
+<br/>
+
 # REST API
 
-The REST API to the example app is described below.
+The REST API is described below.
 
 ## Add Book With Complete Data
 
@@ -20,313 +23,680 @@ The REST API to the example app is described below.
 
 `POST /books`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 226
+{
+    "name": "Buku A",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 100,
+    "reading": false
+}
+```
 
 ### Response
 
+```json
+{
     "status": "success",
     "message": "Buku berhasil ditambahkan",
     "data": {
         "bookId": "2CSYCw8pKzZ9Eqt0"
     }
+}
+```   
 
-## Create a new Thing
+## Add Book With Finished Reading
 
-### Request
-
-`POST /thing/`
-
-    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:7000/thing
-
-### Response
-
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/1
-    Content-Length: 36
-
-    {"id":1,"name":"Foo","status":"new"}
-
-## Get a specific Thing
+`POST /books`
 
 ### Request
 
-`GET /thing/id`
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 226
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+{
+    "name": "Buku A",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 100,
+    "reading": false
+}
+```
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 36
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil ditambahkan",
+    "data": {
+        "bookId": "x8d0LU08LQHc5dya"
+    }
+}
+```
 
-    {"id":1,"name":"Foo","status":"new"}
+## Add Book Without Name
 
-## Get a non-existent Thing
+`POST /books`
 
 ### Request
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 202
 
-`GET /thing/id`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
-
+{
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 25,
+    "reading": false
+}
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Gagal menambahkan buku. Mohon isi nama buku"
+}
+```
 
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
+## Add Book with Page Read More Than Page Count
 
-    {"status":404,"reason":"Not found"}
-
-## Create another new Thing
+`POST /books`
 
 ### Request
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 224
 
-`POST /thing/`
-
-    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
-
+{
+    "name": "Buku A",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 80,
+    "readPage": 90,
+    "reading": false
+}
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount"
+}
+```
 
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/2
-    Content-Length: 35
+## Get All Books
 
-    {"id":2,"name":"Bar","status":null}
-
-## Get list of Things again
+`GET /books`
 
 ### Request
-
-`GET /thing/`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
-
+```json
+GET /books HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "books": [
+            {
+                "id": "OkmiynfwBEXYuSa3",
+                "name": "Buku A",
+                "publisher": "Dicoding Indonesia"
+            },
+            {
+                "id": "x8d0LU08LQHc5dya",
+                "name": "Buku A",
+                "publisher": "Dicoding Indonesia"
+            }
+        ]
+    }
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 74
+## Get Detail Books With Correct Id
 
-    [{"id":1,"name":"Foo","status":"new"},{"id":2,"name":"Bar","status":null}]
-
-## Change a Thing's state
+`POST /books/{{bookId}}`
 
 ### Request
-
-`PUT /thing/:id/status/changed`
-
-    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
-
+```json
+GET /books/ HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "book": {
+            "id": "OkmiynfwBEXYuSa3",
+            "name": "Buku A",
+            "year": 2010,
+            "author": "John Doe",
+            "summary": "Lorem ipsum dolor sit amet",
+            "publisher": "Dicoding Indonesia",
+            "pageCount": 100,
+            "readPage": 25,
+            "finished": false,
+            "reading": false,
+            "insertedAt": "2023-11-12T05:09:40.399Z",
+            "updatedAt": "2023-11-12T05:09:40.399Z"
+        }
+    }
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
+## Get Detail Finished Book
 
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Get changed Thing
+`GET /books/{{bookIdWithFinishedReading}}`
 
 ### Request
-
-`GET /thing/id`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
+```json
+GET /books/ HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "book": {
+            "id": "x8d0LU08LQHc5dya",
+            "name": "Buku A",
+            "year": 2010,
+            "author": "John Doe",
+            "summary": "Lorem ipsum dolor sit amet",
+            "publisher": "Dicoding Indonesia",
+            "pageCount": 100,
+            "readPage": 100,
+            "finished": true,
+            "reading": false,
+            "insertedAt": "2023-11-12T05:12:05.858Z",
+            "updatedAt": "2023-11-12T05:12:05.858Z"
+        }
+    }
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
+## Get Detail Books With Invalid Id
 
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Change a Thing
+`GET /books/xxxxx`
 
 ### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
-
+```json
+GET /books/xxxxx HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Buku tidak ditemukan"
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
+## Update Book With Complete Data
 
-    {"id":1,"name":"Foo","status":"changed2"}
-
-## Attempt to change a Thing using partial params
+`PUT /books/{{bookId}}`
 
 ### Request
+```json
+PUT /books/ HTTP/1.1
+Host: localhost:9000
+Content-Length: 219
 
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
-
+{
+    "name": "Buku A Revisi",
+    "year": 2011,
+    "author": "Jane Doe",
+    "summary": "Lorem Dolor sit Ametttt",
+    "publisher": "Dicoding",
+    "pageCount": 200,
+    "readPage": 26,
+    "reading": false
+}
+```
 ### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil diperbarui"
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
+## Update Book Without Name
 
-    {"id":1,"name":"Foo","status":"changed3"}
-
-## Attempt to change a Thing using invalid params
+`PUT /books/{{bookId}}`
 
 ### Request
+```json
+PUT /books/ HTTP/1.1
+Host: localhost:9000
+Content-Length: 189
 
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/thing/1
-
+{
+    "year": 2011,
+    "author": "Jane Doe",
+    "summary": "Lorem Dolor sit Ametttt",
+    "publisher": "Dicoding",
+    "pageCount": 200,
+    "readPage": 26,
+    "reading": false
+}
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Gagal memperbarui buku. Mohon isi nama buku"
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
+## Update Book With Page Read More Than Page Count
 
-    {"id":1,"name":"Foo","status":"changed4"}
-
-## Change a Thing using the _method hack
+`PUT /books/{{bookId}}`
 
 ### Request
+```json
+PUT /books/ HTTP/1.1
+Host: localhost:9000
+Content-Length: 218
 
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/thing/1
-
+{
+    "name": "Buku A Revisi",
+    "year": 2011,
+    "author": "Jane Doe",
+    "summary": "Lorem Dolor sit Ametttt",
+    "publisher": "Dicoding",
+    "pageCount": 80,
+    "readPage": 90,
+    "reading": false
+}
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount"
+}
+```
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
+## Update Book with Invalid Id
 
-    {"id":1,"name":"Baz","status":"changed4"}
-
-## Change a Thing using the _method hack in the url
+`PUT /books/xxxxx`
 
 ### Request
+```json
+PUT /books/xxxxx HTTP/1.1
+Host: localhost:9000
+Content-Length: 219
 
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/thing/1?_method=PUT
-
+{
+    "name": "Buku A Revisi",
+    "year": 2011,
+    "author": "Jane Doe",
+    "summary": "Lorem Dolor sit Ametttt",
+    "publisher": "Dicoding",
+    "pageCount": 200,
+    "readPage": 26,
+    "reading": false
+}
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Gagal memperbarui buku. Id tidak ditemukan"
+}
+```
 
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: text/html;charset=utf-8
-    Content-Length: 35
+## Delete Book with Correct Id
 
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing
+`DELETE /books/{{bookId}}`
 
 ### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
+```json
+DELETE /books/ HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil dihapus"
+}
+```
 
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 204 No Content
-    Connection: close
+## Delete Finished book
 
-
-## Try to delete same Thing again
+`DELETE /books/{{bookIdWithFinishedReading}}`
 
 ### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
+```json
+DELETE /books/ HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil dihapus"
+}
+```
 
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
+## Delete Book with Invalid Id
 
-    {"status":404,"reason":"Not found"}
-
-## Get deleted Thing
+`DELETE /books/xxxxx`
 
 ### Request
-
-`GET /thing/1`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
+```json
+DELETE /books/xxxxx HTTP/1.1
+Host: localhost:9000
+```
 ### Response
+```json
+{
+    "status": "fail",
+    "message": "Buku gagal dihapus. Id tidak ditemukan"
+}
+```
 
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
+## Add Reading and Finished Book
 
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing using the _method hack
+`POST /books`
 
 ### Request
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 225
 
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/thing/2/
-
+{
+    "name": "Buku A",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 100,
+    "reading": true
+}
+```
 ### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil ditambahkan",
+    "data": {
+        "bookId": "54iIJcxf2VU9ffgS"
+    }
+}
+```
 
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 204 No Content
-    Connection: close
+## Add Reading and Unfinished Book with "Dicoding" Name
 
+`POST /books`
 
+### Request
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 231
+
+{
+    "name": "dicoding Jobs",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 0,
+    "reading": false
+}
+```
+### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil ditambahkan",
+    "data": {
+        "bookId": "3a9sc5ewSh7RsuyC"
+    }
+}
+```
+
+## Add Unreading Books and Unfinished Book "Dicoding" Name
+
+`POST /books`
+
+### Request
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 231
+
+{
+    "name": "dicoding Jobs",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 0,
+    "reading": false
+}
+```
+### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil ditambahkan",
+    "data": {
+        "bookId": "3a9sc5ewSh7RsuyC"
+    }
+}
+```
+
+## Add Unreading Books and Unfinished Book
+
+`POST /books`
+
+### Request
+```json
+POST /books HTTP/1.1
+Host: localhost:9000
+Content-Length: 224
+
+{
+    "name": "Buku A",
+    "year": 2010,
+    "author": "John Doe",
+    "summary": "Lorem ipsum dolor sit amet",
+    "publisher": "Dicoding Indonesia",
+    "pageCount": 100,
+    "readPage": 0,
+    "reading": false
+}
+```
+### Response
+```json
+{
+    "status": "success",
+    "message": "Buku berhasil ditambahkan",
+    "data": {
+        "bookId": "6a61y5XHFhhpLU_v"
+    }
+}
+```
+
+## Get All Reading Books
+
+`GET /books?reading=1`
+
+### Request
+```json
+GET /books?reading=1 HTTP/1.1
+Host: localhost:9000
+```
+### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "books": [
+            {
+                "id": "54iIJcxf2VU9ffgS",
+                "name": "Buku A",
+                "publisher": "Dicoding Indonesia"
+            },
+            {
+                "id": "msrs3hLMh3tNcy92",
+                "name": "Kelas Dicoding",
+                "publisher": "Dicoding Indonesia"
+            }
+        ]
+    }
+}
+```
+
+## Get All Unreading Books
+
+`GET /books?reading=0`
+
+### Request
+```json
+GET /books?reading=0 HTTP/1.1
+Host: localhost:9000
+```
+### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "books": [
+            {
+                "id": "3a9sc5ewSh7RsuyC",
+                "name": "dicoding Jobs",
+                "publisher": "Dicoding Indonesia"
+            },
+            {
+                "id": "6a61y5XHFhhpLU_v",
+                "name": "Buku A",
+                "publisher": "Dicoding Indonesia"
+            }
+        ]
+    }
+}
+```
+
+## Get All Finished Books
+
+`GET /books?finished=1`
+
+### Request
+```json
+GET /books?finished=1 HTTP/1.1
+Host: localhost:9000
+```
+### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "books": [
+            {
+                "id": "54iIJcxf2VU9ffgS",
+                "name": "Buku A",
+                "publisher": "Dicoding Indonesia"
+            }
+        ]
+    }
+}
+```
+
+## Get All Unfinished Books
+
+`GET /books?finished=0`
+
+### Request
+```json
+GET /books?finished=0 HTTP/1.1
+Host: localhost:9000
+```
+### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "books": [
+            {
+                "id": "msrs3hLMh3tNcy92",
+                "name": "Kelas Dicoding",
+                "publisher": "Dicoding Indonesia"
+            },
+            {
+                "id": "3a9sc5ewSh7RsuyC",
+                "name": "dicoding Jobs",
+                "publisher": "Dicoding Indonesia"
+            },
+            {
+                "id": "6a61y5XHFhhpLU_v",
+                "name": "Buku A",
+                "publisher": "Dicoding Indonesia"
+            }
+        ]
+    }
+}
+```
+
+## Get All Books Contains "Dicoding" Name
+
+`GET /books?name=Dicoding`
+
+### Request
+```json
+GET /books?name=Dicoding HTTP/1.1
+Host: localhost:9000
+```
+### Response
+```json
+{
+    "status": "success",
+    "data": {
+        "books": [
+            {
+                "id": "msrs3hLMh3tNcy92",
+                "name": "Kelas Dicoding",
+                "publisher": "Dicoding Indonesia"
+            },
+            {
+                "id": "3a9sc5ewSh7RsuyC",
+                "name": "dicoding Jobs",
+                "publisher": "Dicoding Indonesia"
+            }
+        ]
+    }
+}
+```
+
+## Information
+You can also view the API documentation through the following <a href="https://documenter.getpostman.com/view/27268464/2s9YXk3g6S" target="_blank">postman</a> link
