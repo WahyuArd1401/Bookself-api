@@ -23,10 +23,11 @@ The REST API is described below.
 
 `POST /books`
 
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 226
+
 {
     "name": "Buku A",
     "year": 2010,
@@ -57,7 +58,7 @@ Content-Length: 226
 
 ### Request
 
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 226
@@ -91,7 +92,7 @@ Content-Length: 226
 `POST /books`
 
 ### Request
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 202
@@ -119,7 +120,7 @@ Content-Length: 202
 `POST /books`
 
 ### Request
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 224
@@ -148,7 +149,7 @@ Content-Length: 224
 `GET /books`
 
 ### Request
-```json
+```http
 GET /books HTTP/1.1
 Host: localhost:9000
 ```
@@ -178,7 +179,7 @@ Host: localhost:9000
 `POST /books/{{bookId}}`
 
 ### Request
-```json
+```http
 GET /books/ HTTP/1.1
 Host: localhost:9000
 ```
@@ -210,7 +211,7 @@ Host: localhost:9000
 `GET /books/{{bookIdWithFinishedReading}}`
 
 ### Request
-```json
+```http
 GET /books/ HTTP/1.1
 Host: localhost:9000
 ```
@@ -242,7 +243,7 @@ Host: localhost:9000
 `GET /books/xxxxx`
 
 ### Request
-```json
+```http
 GET /books/xxxxx HTTP/1.1
 Host: localhost:9000
 ```
@@ -259,7 +260,7 @@ Host: localhost:9000
 `PUT /books/{{bookId}}`
 
 ### Request
-```json
+```http
 PUT /books/ HTTP/1.1
 Host: localhost:9000
 Content-Length: 219
@@ -288,7 +289,7 @@ Content-Length: 219
 `PUT /books/{{bookId}}`
 
 ### Request
-```json
+```http
 PUT /books/ HTTP/1.1
 Host: localhost:9000
 Content-Length: 189
@@ -316,7 +317,7 @@ Content-Length: 189
 `PUT /books/{{bookId}}`
 
 ### Request
-```json
+```http
 PUT /books/ HTTP/1.1
 Host: localhost:9000
 Content-Length: 218
@@ -345,7 +346,7 @@ Content-Length: 218
 `PUT /books/xxxxx`
 
 ### Request
-```json
+```http
 PUT /books/xxxxx HTTP/1.1
 Host: localhost:9000
 Content-Length: 219
@@ -374,7 +375,7 @@ Content-Length: 219
 `DELETE /books/{{bookId}}`
 
 ### Request
-```json
+```http
 DELETE /books/ HTTP/1.1
 Host: localhost:9000
 ```
@@ -391,7 +392,7 @@ Host: localhost:9000
 `DELETE /books/{{bookIdWithFinishedReading}}`
 
 ### Request
-```json
+```http
 DELETE /books/ HTTP/1.1
 Host: localhost:9000
 ```
@@ -408,7 +409,7 @@ Host: localhost:9000
 `DELETE /books/xxxxx`
 
 ### Request
-```json
+```http
 DELETE /books/xxxxx HTTP/1.1
 Host: localhost:9000
 ```
@@ -425,7 +426,7 @@ Host: localhost:9000
 `POST /books`
 
 ### Request
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 225
@@ -457,7 +458,7 @@ Content-Length: 225
 `POST /books`
 
 ### Request
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 231
@@ -489,7 +490,7 @@ Content-Length: 231
 `POST /books`
 
 ### Request
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 231
@@ -521,7 +522,7 @@ Content-Length: 231
 `POST /books`
 
 ### Request
-```json
+```http
 POST /books HTTP/1.1
 Host: localhost:9000
 Content-Length: 224
@@ -553,7 +554,7 @@ Content-Length: 224
 `GET /books?reading=1`
 
 ### Request
-```json
+```http
 GET /books?reading=1 HTTP/1.1
 Host: localhost:9000
 ```
@@ -583,7 +584,7 @@ Host: localhost:9000
 `GET /books?reading=0`
 
 ### Request
-```json
+```http
 GET /books?reading=0 HTTP/1.1
 Host: localhost:9000
 ```
@@ -613,7 +614,7 @@ Host: localhost:9000
 `GET /books?finished=1`
 
 ### Request
-```json
+```http
 GET /books?finished=1 HTTP/1.1
 Host: localhost:9000
 ```
@@ -638,7 +639,7 @@ Host: localhost:9000
 `GET /books?finished=0`
 
 ### Request
-```json
+```http
 GET /books?finished=0 HTTP/1.1
 Host: localhost:9000
 ```
@@ -673,7 +674,7 @@ Host: localhost:9000
 `GET /books?name=Dicoding`
 
 ### Request
-```json
+```http
 GET /books?name=Dicoding HTTP/1.1
 Host: localhost:9000
 ```
